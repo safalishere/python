@@ -8,7 +8,6 @@ url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_cov
 response = requests.get(url)
 data = pd.read_csv(io.StringIO(response.content.decode('utf-8')))
 
-# Analyze the data
 countries = ['US', 'India', 'Brazil', 'Russia', 'United Kingdom']
 data = data[data['Country/Region'].isin(countries)]
 grouped = data.groupby('Country/Region').sum()
