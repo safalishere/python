@@ -1,0 +1,23 @@
+import pandas as pd
+import requests
+import io
+import matplotlib.pyplot as plt
+
+# Get the latest COVID-19 data
+url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
+response = requests.get(url)
+data = pd.read_csv(io.StringIO(response.content.decode('utf-8')))
+
+# Analyze the data
+countries = ['US', 'India', 'Brazil', 'Russia', 'United Kingdom']
+data = data[data['Country/Region'].isin(countries)]
+grouped = data.groupby('Country/Region').sum()
+grouped = grouped.drop(columns=['Lat', 'Long'])
+grouped = grouped.transpose()
+
+# Plot the data
+grouped.plot()
+plt.title('COVID-19 Confirmed Cases')
+plt.xlabel('Date')
+plt.ylabel('Number of Cases')
+plt.show()
